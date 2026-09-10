@@ -14,7 +14,11 @@ These instructions apply to all work in this repository.
 
 ## Engineering boundaries
 
-- Keep the scope to product catalogue search and comparison; approve each category and dataset before implementation.
+- Keep the scope to evidence-grounded product catalogue search and comparison.
+- Treat smartphones as the first implemented catalogue category. Any additional category requires
+  an approved dataset, schema, strict filters, and evaluation plan before implementation.
+- Historical laptop and rejected smartphone audit code and reports remain evidence, not active
+  catalogue data.
 - Preserve raw data and original product IDs; never invent missing values.
 - Use deterministic Python for strict filters, score handling, and evidence checks where practical.
 - Keep modules small, typed where useful, and understandable in an undergraduate interview.
@@ -36,4 +40,3 @@ These instructions apply to all work in this repository.
 - Use the `phase/NN-description` branch for each phase.
 - Show status, changed files, test results, and proposed commits before asking to commit.
 - Never force-push, rewrite history, or use destructive Git commands without explicit approval.
-

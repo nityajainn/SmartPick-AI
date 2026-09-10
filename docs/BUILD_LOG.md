@@ -1,33 +1,44 @@
 # Build Log
 
-This log records work when it actually occurs. Planned work belongs in the roadmap, not here.
+This log records SmartPick-AI work when it occurs. Planned work belongs in the roadmap.
 
-## Historical source record: 2026-09-02 — SearchRank-AI Phase 0
+## 2026-09-08 — Phase 0: project foundation
 
-Status: complete
+Status: complete and published
 
-- Confirmed that the starting workspace was empty and not a Git repository.
-- Confirmed Python 3.12.13 and Git 2.53.0 were available.
-- Initialized local Git with `main` and created `phase/00-foundation`.
-- Added the Python package, configuration, logging, documentation, and test foundations.
-- Added ignore rules for secrets, generated data, embeddings, indexes, caches, and local databases.
-- Created an isolated `.venv` and installed the declared editable development dependencies.
+- Established SmartPick-AI with a fresh repository history.
+- Added the Python package boundary, environment configuration, shared logging, documentation,
+  smoke tests, and ignore rules for secrets and generated data.
+- Generalized the project direction to evidence-grounded product catalogue search and comparison.
+- Retained the internal `searchrank_ai` package name and documented the adapted foundation.
 
-Validation environment: Windows, Python 3.12.13, pytest 8.4.2, Ruff 0.16.5.
+Validation recorded for the published Phase 0 snapshot: 3 tests passed; Ruff lint and format checks
+passed for 10 files.
 
-- `python -m pytest`: 3 passed in 0.03 seconds.
-- `python -m ruff check .`: passed.
-- `python -m ruff format --check .`: 10 files already formatted.
-- `python -m pip check`: no broken requirements.
-- Installed-package import smoke check: passed.
-- Ignore-rule check: `.env` and generated artifact paths are ignored; `.env.example` is trackable.
-- Common secret-pattern scan: no matches.
+## 2026-09-10 — Phase 1: first catalogue data pipeline
 
-## 2026-09-08 — SmartPick-AI independent Phase 0 snapshot
+Status: complete and published
 
-- Prepared a fresh repository history from the existing Phase 0 foundation, with source attribution retained.
-- Generalized the README, package description, architecture wording, and working agreement to product catalogue search and comparison.
-- Kept category selection, datasets, and retrieval implementation for later approved phases.
-- Preserved the previous SmartPick-AI history in a local Git bundle before replacement.
-- Validation on the prepared snapshot: 3 tests passed; Ruff lint passed; format check passed for 10 files.
-- The earlier source record below/above remains historical evidence, not a claim that its work was performed today.
+- Added deterministic, evidence-preserving dataset audit utilities and synthetic regression tests.
+- Retained the rejected laptop and Amazon-phone audits as decision evidence.
+- Established smartphones as the first implemented catalogue category while keeping the overall
+  project direction applicable to separately validated product categories.
+- Added the adopted 91mobiles pipeline with source-schema validation, explicit parsing, stable IDs,
+  eligibility reasons, full raw-value audit records, and overwrite protection.
+- Added the documented 18-field smartphone catalogue schema and reproduction path.
+- Kept raw data, processed catalogues, and generated audit artifacts outside Git.
+
+The imported source audit record reports 4,000 source rows, 3,062 retained smartphones, 4,000
+unique source URLs and derived IDs, and a reproducible catalogue SHA-256 of
+`c3428dd04e5d02c6a66ce00f5961f6b1f6ba9dcc30d86a37ffde84523619c7ea`. These measurements were
+produced by the original full-data audit and were not rerun during publication because the dataset
+is intentionally excluded from Git.
+
+Validation run on the prepared SmartPick-AI Phase 1 snapshot on 2026-09-10:
+
+- `python -m pytest -q`: 142 passed in 2.05 seconds.
+- Ruff lint: passed.
+- Ruff format check: 22 files already formatted.
+- Git whitespace check: passed.
+
+No retrieval implementation, database, agent workflow, API, interface, or Phase 2 work was added.
