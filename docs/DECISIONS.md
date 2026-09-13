@@ -1,5 +1,19 @@
 # Decision Log
 
+## SP-012 — Adopt the BM25 baseline for SmartPick-AI
+
+- **Date:** 2026-09-13
+- **Decision:** Adapt the existing standard-library BM25 implementation with fixed `k1 = 1.5`,
+  `b = 0.75`, field weights, stable product-ID ties, and catalogue-hash validation.
+- **Reason:** Keep lexical ranking inspectable and independently measurable before semantic search.
+- **Alternative:** A third-party scorer or search server would add a dependency without replacing
+  the provenance, schema, serialization, or evaluation checks.
+- **Boundary:** The first schema and benchmark cover smartphones. Numerical constraints and other
+  categories require separate validated handling. BM25 scores do not enforce shopping filters.
+- **Provenance:** Source implementation `e818cb7`, initial tests `0c49e1f`, design report
+  `31df863`, and extended coverage `53263a5` are adapted from SearchRank-AI. SmartPick-AI
+  records the adaptation in new commits with actual publication dates.
+
 Important decisions are recorded when they are made. Dataset, retrieval, storage, LLM, and
 evaluation choices remain deliberately open until their relevant phases.
 

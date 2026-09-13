@@ -46,8 +46,18 @@ announced products, and refuses output overwrites or duplicate product IDs. The 
 every raw value. The generated catalogue excludes `spec_score`, `antutu_score`, `awards`,
 `expert_rating`, and `store` as instructed. See [the catalogue audit](MOBILE_CATALOGUE_AUDIT.md).
 
-No search or RAG request path exists yet. Phase 2 can consume the generated catalogue only after
-its own explicit approval.
+## Phase 2 keyword search
+
+The validated 18-field catalogue feeds a weighted Unicode tokenizer and a versioned BM25 JSON
+index. Queries return product IDs, names, source URLs, and scores with deterministic tie-breaking.
+The index records the catalogue hash, scoring parameters, and document term frequencies.
+
+`bm25.py` handles building, loading, searching, and binary-relevance evaluation using the Python
+standard library. Product names have weight 3, brands weight 2, and specification evidence weight 1.
+The reviewed benchmark pins the catalogue hash so changed data cannot silently reuse judgments.
+
+This checkpoint provides lexical retrieval. Semantic retrieval, hybrid ranking, numeric shopping
+constraints, an LLM, and database-backed lookup remain later phases.
 
 ## Target request flow
 

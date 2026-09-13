@@ -9,7 +9,7 @@ can be traced to catalogue records.
 
 ## Current status
 
-**Phases 0 and 1 are complete.** Phase 1 establishes smartphones as the first evaluated catalogue
+**Phases 0 through 2 are complete.** Phase 1 establishes smartphones as the first evaluated catalogue
 category. The adopted 91mobiles source audit retains 3,062 of 4,000 rows as price- and
 capacity-filter-ready smartphones. The reproducible catalogue includes stable IDs, INR prices,
 explicit RAM and storage, normalized ratings, comparison specifications, dates, and source URLs.
@@ -26,8 +26,9 @@ smartphone-specific because strict fields and cleaning rules must be validated f
 Additional product categories require their own approved dataset, schema, filters, and evaluation
 rather than reusing phone assumptions.
 
-No retrieval system, database, agent workflow, API, interface, or search-quality result exists in
-this published checkpoint.
+Phase 2 adds deterministic BM25 keyword search, a local index, traceable ranked results, and a
+reviewed 12-query exact-model benchmark. Semantic retrieval, strict shopping filters, storage,
+an agent workflow, API, and interface remain later phases.
 
 ## What SmartPick aims to do
 
@@ -81,12 +82,29 @@ python -X utf8 -m searchrank_ai.mobile_catalogue `
 The command validates the source schema, records explicit rejection reasons, preserves original
 values in local audit evidence, and refuses to overwrite existing outputs.
 
+## Build and search the keyword index
+
+After producing the Phase 1 catalogue:
+
+```powershell
+python -m searchrank_ai.bm25 build --catalogue data/processed/suresh_91mobiles_2008_2026/catalogue.csv --output artifacts/bm25/phase2-index.json
+python -m searchrank_ai.bm25 search --index artifacts/bm25/phase2-index.json --query "snapdragon amoled" --limit 10
+python -m searchrank_ai.bm25 evaluate --index artifacts/bm25/phase2-index.json --cases evaluation/bm25_navigational.json --limit 10 --output artifacts/bm25/phase2-evaluation.json
+```
+
+Results include product IDs, names, source URLs, and BM25 scores. Indexes and reports remain local
+and ignored by Git. Output paths must be new because commands refuse to overwrite existing files.
+A phrase such as "under 30000" does not enforce a price filter in this phase.
+
+See [the BM25 report](docs/BM25_RETRIEVAL.md) for scoring, benchmark conditions, and limitations.
+
 ## Project map
 
 | Path | Purpose |
 |---|---|
 | `src/searchrank_ai/` | Package code; original internal package name retained |
 | `tests/` | Synthetic automated tests |
+| `evaluation/` | Reviewed retrieval queries and relevance judgments |
 | `docs/` | Architecture, decisions, audits, build log, and evaluation notes |
 | `data/` | Local raw and processed data, ignored by Git |
 | `artifacts/` | Generated audits and later retrieval artifacts, ignored by Git |
@@ -97,7 +115,7 @@ values in local audit evidence, and refuses to overwrite existing outputs.
 |---:|---|---|
 | 0 | Project foundation | Complete |
 | 1 | First category dataset audit, schema, and cleaning | Complete: smartphones |
-| 2 | BM25 keyword retrieval baseline | Not started |
+| 2 | BM25 keyword retrieval baseline | Complete |
 | 3 | Semantic and hybrid retrieval with strict filters | Not started |
 | 4 | PostgreSQL and pgvector storage | Not started |
 | 5 | Bounded agent workflow and evidence verification | Not started |
@@ -108,7 +126,8 @@ values in local audit evidence, and refuses to overwrite existing outputs.
 ## Provenance
 
 SmartPick-AI began from an adapted SearchRank-AI Phase 0 foundation and now records its own
-development history. The retained audit reports show how evidence changed the catalogue decision,
+development history. Phase 2 adapts the original BM25 implementation and tests as new commits in
+this repository. The retained audit reports show how evidence changed the catalogue decision,
 including rejected laptop and Amazon-phone candidates. They are engineering evidence, not active
 catalogue data.
 

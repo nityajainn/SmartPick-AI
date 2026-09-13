@@ -42,3 +42,20 @@ Validation run on the prepared SmartPick-AI Phase 1 snapshot on 2026-09-10:
 - Git whitespace check: passed.
 
 No retrieval implementation, database, agent workflow, API, interface, or Phase 2 work was added.
+
+## 2026-09-13 — Phase 2: BM25 keyword retrieval
+
+- Adapted the original Phase 2 BM25 implementation, reviewed judgments, and full query-coverage
+  tests into SmartPick-AI's independent history.
+- Added versioned local index building, keyword search, deterministic scores and ties, provenance,
+  schema validation, and reproducible binary-relevance evaluation.
+- Updated the README and architecture while retaining the general product-search direction.
+  The implemented schema and benchmark still use the first smartphone catalogue.
+- Ran the suite against this isolated preparation copy: 162 passed in 2.68 seconds.
+- Ruff lint passed; formatting passed for 25 files.
+- Built indexes twice from the unchanged local 3,062-product catalogue, then evaluated each against
+  the 12 reviewed exact-model queries. Indexes and evaluation reports were byte-identical.
+- Recall@10, MRR@10, and NDCG@10 were each 1.000. These results apply only to the reviewed
+  exact-model queries, not semantic relevance, numeric constraints, or general shopping needs.
+- Dataset and derived artifacts remain local and ignored. Project 1 was used only as a read-only
+  source; no later-phase code was included.

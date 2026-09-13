@@ -1,6 +1,21 @@
 # Evaluation
 
-No retrieval or agent evaluation has been run yet. Phase 0 validates only the project foundation.
+## 2026-09-13 — SmartPick-AI Phase 2 validation
+
+The isolated SmartPick-AI Phase 2 copy passed 162 tests, lint, and formatting checks. Using the
+unchanged local catalogue with SHA-256
+`c3428dd04e5d02c6a66ce00f5961f6b1f6ba9dcc30d86a37ffde84523619c7ea`,
+two independent builds and evaluations produced byte-identical indexes and reports.
+
+On 3,062 products and the 12 reviewed exact-model queries, Recall@10, MRR@10, and NDCG@10
+were all 1.000. Every judged target was ranked first. This narrow benchmark does not measure broad
+shopping needs, unjudged variants, misspellings, semantic concepts, or numeric filter compliance.
+Generated artifacts are excluded from Git. See [the BM25 report](BM25_RETRIEVAL.md).
+
+## Historical source evaluation records
+
+Phase 2 provides a reviewed exact-model BM25 benchmark. Semantic, hybrid, strict-constraint,
+and agent evaluations remain later phases. Earlier entries below retain the source audit dates.
 
 On 2026-09-02, the Phase 0 suite ran on Windows with Python 3.12.13 and pytest 8.4.2:
 3 smoke tests passed in 0.03 seconds. This is an engineering validation result, not a search-quality
