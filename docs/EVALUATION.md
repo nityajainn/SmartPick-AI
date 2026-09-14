@@ -1,5 +1,28 @@
 # Evaluation
 
+## 2026-09-14 — SmartPick-AI Phase 3 validation
+
+The isolated Phase 3 copy passed 182 tests in 1.90 seconds. Ruff lint and formatting checks passed
+for 29 files; the reused Python environment passed dependency consistency checks.
+
+The actual offline CPU evaluation used the cached pinned MiniLM encoder, the existing
+3,062-product catalogue, BM25 index, semantic vectors, and 20 reviewed cases. The semantic index
+was validated and reused, not rebuilt during this publication.
+
+| Configuration | Recall@10 | MRR@10 | NDCG@10 | Constraint satisfaction |
+|---|---:|---:|---:|---:|
+| BM25 | 0.811111 | 0.812500 | 0.808979 | 1.000000 |
+| Semantic | 0.937500 | 0.887500 | 0.899768 | 1.000000 |
+| Hybrid, alpha 0.25 | 0.925000 | 0.950000 | 0.928558 | 1.000000 |
+| Hybrid, alpha 0.50 | 0.859722 | 0.827222 | 0.826990 | 1.000000 |
+| Hybrid, alpha 0.75 | 0.815278 | 0.816250 | 0.811935 | 1.000000 |
+
+The recorded selection rule chooses alpha 0.25. These results reproduce the source benchmark;
+the 20-case set is too small for broad product-search claims. Semantic-only recall is higher,
+while the selected hybrid improves top-rank quality on this set. No LLM or network call was used.
+The generated report stays in ignored local artifacts. Original model-build timings remain
+historical and are labelled as such in [the hybrid report](HYBRID_RETRIEVAL.md).
+
 ## 2026-09-13 — SmartPick-AI Phase 2 validation
 
 The isolated SmartPick-AI Phase 2 copy passed 162 tests, lint, and formatting checks. Using the
@@ -14,8 +37,8 @@ Generated artifacts are excluded from Git. See [the BM25 report](BM25_RETRIEVAL.
 
 ## Historical source evaluation records
 
-Phase 2 provides a reviewed exact-model BM25 benchmark. Semantic, hybrid, strict-constraint,
-and agent evaluations remain later phases. Earlier entries below retain the source audit dates.
+Phase 2 provides a reviewed exact-model BM25 benchmark, expanded by the Phase 3 comparison above.
+Agent evaluation remains a later phase. Earlier entries below retain the source audit dates.
 
 On 2026-09-02, the Phase 0 suite ran on Windows with Python 3.12.13 and pytest 8.4.2:
 3 smoke tests passed in 0.03 seconds. This is an engineering validation result, not a search-quality

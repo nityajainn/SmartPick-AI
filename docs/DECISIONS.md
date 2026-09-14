@@ -1,5 +1,21 @@
 # Decision Log
 
+## SP-013 — Adapt semantic, hybrid, and constrained retrieval
+
+- **Date:** 2026-09-14
+- **Decision:** Adopt the source Phase 3 implementation with the pinned
+  `all-MiniLM-L6-v2` revision `c21050a7ef692090620a6d037dd736908f9c7cf6`,
+  normalized 384-dimensional embeddings, and explicit hard filters before ranking.
+- **Reason:** Keep product evidence, model identity, and scoring inspectable; relevance scores
+  do not prove that a price, capacity, brand, or rating requirement is met.
+- **Alternatives:** Larger encoders and a vector database add costs that need separate evaluation.
+  Database persistence remains Phase 4, while the current catalogue fits an in-memory matrix.
+- **Hybrid rule:** Compare alpha 0.25, 0.50, and 0.75 by NDCG@10, MRR@10, Recall@10, proximity
+  to 0.5, and finally lower alpha. The source benchmark selected 0.25; results are provisional
+  on this small reviewed set, not a universal ranking claim.
+- **Source mapping:** Adapt implementation `eec1486`, tests and judgments `27a2922`,
+  and design/evaluation notes `dfc8b43` into new SmartPick-AI commits dated today.
+
 ## SP-012 — Adopt the BM25 baseline for SmartPick-AI
 
 - **Date:** 2026-09-13

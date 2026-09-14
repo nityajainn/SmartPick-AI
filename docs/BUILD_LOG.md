@@ -59,3 +59,18 @@ No retrieval implementation, database, agent workflow, API, interface, or Phase 
   exact-model queries, not semantic relevance, numeric constraints, or general shopping needs.
 - Dataset and derived artifacts remain local and ignored. Project 1 was used only as a read-only
   source; no later-phase code was included.
+
+## 2026-09-14 — Phase 3: semantic, hybrid, and constrained retrieval
+
+- Adapted the original Phase 3 implementation, tests, reviewed judgments, and design report into
+  SmartPick-AI's independent history, retaining the general product-search presentation.
+- Added pinned MiniLM encoding, validated local vector artifacts, inspectable hybrid score
+  components, and deterministic pre-ranking price, RAM, storage, rating, and brand filters.
+- Ran the isolated preparation copy's suite: 182 tests passed in 1.90 seconds. Ruff lint,
+  formatting for 29 files, and dependency consistency checks passed.
+- Ran the 20-case benchmark offline on CPU using cached model weights and existing validated
+  catalogue/BM25/semantic artifacts. No semantic index rebuild or new build timing is claimed.
+- Reproduced selection of alpha 0.25: Recall@10 0.925000, MRR@10 0.950000,
+  NDCG@10 0.928558, constraint satisfaction 1.000000.
+- Kept generated data, embeddings, model weights, and evaluation reports local and ignored.
+  No Phase 4 database implementation, agent workflow, API, or interface was included.

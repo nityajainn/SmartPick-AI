@@ -9,7 +9,7 @@ can be traced to catalogue records.
 
 ## Current status
 
-**Phases 0 through 2 are complete.** Phase 1 establishes smartphones as the first evaluated catalogue
+**Phases 0 through 3 are complete.** Phase 1 establishes smartphones as the first evaluated catalogue
 category. The adopted 91mobiles source audit retains 3,062 of 4,000 rows as price- and
 capacity-filter-ready smartphones. The reproducible catalogue includes stable IDs, INR prices,
 explicit RAM and storage, normalized ratings, comparison specifications, dates, and source URLs.
@@ -26,9 +26,10 @@ smartphone-specific because strict fields and cleaning rules must be validated f
 Additional product categories require their own approved dataset, schema, filters, and evaluation
 rather than reusing phone assumptions.
 
-Phase 2 adds deterministic BM25 keyword search, a local index, traceable ranked results, and a
-reviewed 12-query exact-model benchmark. Semantic retrieval, strict shopping filters, storage,
-an agent workflow, API, and interface remain later phases.
+The implemented search supports BM25, semantic, and hybrid ranking with traceable product IDs,
+source URLs, and score components. Phase 3 adds strict price, RAM, storage, rating, and brand
+filters, plus a reviewed 20-case retrieval benchmark. Database storage, an agent workflow, API,
+and interface remain later phases.
 
 ## What SmartPick aims to do
 
@@ -94,9 +95,28 @@ python -m searchrank_ai.bm25 evaluate --index artifacts/bm25/phase2-index.json -
 
 Results include product IDs, names, source URLs, and BM25 scores. Indexes and reports remain local
 and ignored by Git. Output paths must be new because commands refuse to overwrite existing files.
-A phrase such as "under 30000" does not enforce a price filter in this phase.
+A phrase such as "under 30000" does not enforce a price filter in the BM25 keyword command.
+Use the structured Phase 3 options below for hard requirements.
 
 See [the BM25 report](docs/BM25_RETRIEVAL.md) for scoring, benchmark conditions, and limitations.
+
+## Semantic and hybrid search with strict filters
+
+Build the semantic index after generating the catalogue and BM25 index. The first build needs
+the pinned public model revision; later runs can use its local cache.
+
+```powershell
+python -m searchrank_ai.retrieval build-semantic --catalogue data/processed/suresh_91mobiles_2008_2026/catalogue.csv --output artifacts/semantic/phase3-index.npz --device cpu
+python -m searchrank_ai.retrieval search --catalogue data/processed/suresh_91mobiles_2008_2026/catalogue.csv --bm25-index artifacts/bm25/phase2-index.json --semantic-index artifacts/semantic/phase3-index.npz --query "oneplus nord 6" --mode hybrid --alpha 0.25 --max-price 40000 --min-ram 8 --min-storage 256 --min-rating 4.4 --include-brand OnePlus
+```
+
+Strict filters run before ranking. Missing ratings fail a minimum-rating requirement, and
+conflicting included/excluded brands are rejected. Constraints must be supplied explicitly;
+natural-language interpretation remains a later phase. The current filters and semantic search
+text are validated for the first smartphone catalogue.
+
+See [the hybrid retrieval report](docs/HYBRID_RETRIEVAL.md) for the pinned model, normalization,
+benchmark conditions, reproduction commands, and limitations.
 
 ## Project map
 
@@ -116,7 +136,7 @@ See [the BM25 report](docs/BM25_RETRIEVAL.md) for scoring, benchmark conditions,
 | 0 | Project foundation | Complete |
 | 1 | First category dataset audit, schema, and cleaning | Complete: smartphones |
 | 2 | BM25 keyword retrieval baseline | Complete |
-| 3 | Semantic and hybrid retrieval with strict filters | Not started |
+| 3 | Semantic and hybrid retrieval with strict filters | Complete |
 | 4 | PostgreSQL and pgvector storage | Not started |
 | 5 | Bounded agent workflow and evidence verification | Not started |
 | 6 | API and demonstration interface | Not started |
@@ -127,7 +147,8 @@ See [the BM25 report](docs/BM25_RETRIEVAL.md) for scoring, benchmark conditions,
 
 SmartPick-AI began from an adapted SearchRank-AI Phase 0 foundation and now records its own
 development history. Phase 2 adapts the original BM25 implementation and tests as new commits in
-this repository. The retained audit reports show how evidence changed the catalogue decision,
+this repository. Phase 3 likewise adapts the source semantic, hybrid, and constraint components
+into new SmartPick-AI commits. The retained audit reports show how evidence changed the catalogue decision,
 including rejected laptop and Amazon-phone candidates. They are engineering evidence, not active
 catalogue data.
 

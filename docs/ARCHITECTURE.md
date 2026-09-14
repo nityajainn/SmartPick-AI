@@ -56,8 +56,23 @@ The index records the catalogue hash, scoring parameters, and document term freq
 standard library. Product names have weight 3, brands weight 2, and specification evidence weight 1.
 The reviewed benchmark pins the catalogue hash so changed data cannot silently reuse judgments.
 
-This checkpoint provides lexical retrieval. Semantic retrieval, hybrid ranking, numeric shopping
-constraints, an LLM, and database-backed lookup remain later phases.
+This component provides lexical retrieval; Phase 3 composes it with the semantic index and filters.
+
+## Phase 3 semantic and hybrid retrieval
+
+Labelled catalogue evidence is encoded using the pinned MiniLM model as normalized 384-dimensional
+vectors. The versioned NPZ artifact retains the model identity, catalogue hash, and ordered IDs.
+`semantic.py` owns encoding and artifact validation; `retrieval.py` aligns this artifact with
+the catalogue and BM25 index and supports independent BM25, semantic, and hybrid search.
+
+Strict maximum-price, minimum-RAM/storage/rating, and included/excluded-brand checks run across
+the complete catalogue before normalization and ranking. Missing ratings fail the rating filter;
+contradictory brand requirements are rejected. Hybrid scoring combines max-normalized eligible
+BM25 scores with shifted cosine similarity. The selected alpha is 0.25.
+
+The matrix stays in memory. PostgreSQL/pgvector, natural-language constraint extraction, an LLM,
+and the API remain later phases. Current search text and structured fields cover smartphones;
+other categories require validated schemas and evidence rather than assuming phone fields apply.
 
 ## Target request flow
 
