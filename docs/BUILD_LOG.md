@@ -74,3 +74,21 @@ No retrieval implementation, database, agent workflow, API, interface, or Phase 
   NDCG@10 0.928558, constraint satisfaction 1.000000.
 - Kept generated data, embeddings, model weights, and evaluation reports local and ignored.
   No Phase 4 database implementation, agent workflow, API, or interface was included.
+
+## 2026-09-15 — Phase 4: PostgreSQL and pgvector storage
+
+- Adapted the committed source Phase 4 implementation and transaction fix into SmartPick-AI.
+- Added complete product persistence, aligned vector ingestion, provenance metadata, ordered
+  evidence lookup, and exact pgvector cosine search with deterministic ties.
+- Preserved explicit transactions for schema creation and ingestion, using autocommit for
+  standalone operations to prevent type registration from masking uncommitted writes.
+- Added the source tests, including the transaction regression and optional disposable-database
+  integration coverage. Kept the general product-search description and first-category schema.
+- Validation: 191 tests passed and one live-database integration test skipped in 3.13 seconds.
+  Ruff lint passed; formatting passed for 33 files; the reused environment passed dependency checks.
+- Loaded and validated the actual 3,062-product catalogue and aligned 384-dimensional embeddings.
+  The catalogue hash and pinned MiniLM identity matched the Phase 3 artifacts.
+- No disposable test database was configured for this run; no live ingestion or database-query
+  result is claimed. No database service was created or changed.
+- Worked only in the isolated SmartPick-AI preparation copy; Project 1's uncommitted changes
+  were excluded. No Phase 5 agent implementation, API, interface, or container setup was included.

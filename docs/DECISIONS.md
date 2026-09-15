@@ -1,5 +1,20 @@
 # Decision Log
 
+## SP-014 — Adapt validated PostgreSQL and pgvector persistence
+
+- **Date:** 2026-09-15
+- **Decision:** Store complete first-category records and aligned vectors in PostgreSQL, retaining
+  original IDs, null missing values, catalogue hash, encoder identity, and vector dimension.
+- **Consistency:** Validate inputs, acquire an advisory lock, then synchronize records and metadata
+  in one explicit transaction. Autocommit prevents preliminary type registration from leaving
+  an implicit outer transaction that would discard successful-looking writes.
+- **Alternatives:** An approximate vector index, pooling, and migration framework remain deferred;
+  exact cosine ordering is sufficient for this 3,062-record checkpoint.
+- **Scope:** The database schema implements the first smartphone category. General product-search
+  branding does not imply that unvalidated categories can use the same fields.
+- **Source mapping:** Implementation `0e64f6f`, tests `a415673`, documentation `a73cef6`,
+  and transaction fix `974c83c` are adapted into new SmartPick-AI commits dated today.
+
 ## SP-013 — Adapt semantic, hybrid, and constrained retrieval
 
 - **Date:** 2026-09-14

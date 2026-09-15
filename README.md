@@ -9,7 +9,7 @@ can be traced to catalogue records.
 
 ## Current status
 
-**Phases 0 through 3 are complete.** Phase 1 establishes smartphones as the first evaluated catalogue
+**Phases 0 through 4 are complete.** Phase 1 establishes smartphones as the first evaluated catalogue
 category. The adopted 91mobiles source audit retains 3,062 of 4,000 rows as price- and
 capacity-filter-ready smartphones. The reproducible catalogue includes stable IDs, INR prices,
 explicit RAM and storage, normalized ratings, comparison specifications, dates, and source URLs.
@@ -28,8 +28,9 @@ rather than reusing phone assumptions.
 
 The implemented search supports BM25, semantic, and hybrid ranking with traceable product IDs,
 source URLs, and score components. Phase 3 adds strict price, RAM, storage, rating, and brand
-filters, plus a reviewed 20-case retrieval benchmark. Database storage, an agent workflow, API,
-and interface remain later phases.
+filters, plus a reviewed 20-case retrieval benchmark. Phase 4 adds PostgreSQL/pgvector persistence,
+transactional catalogue ingestion, ordered product lookup, and database vector search.
+An agent workflow, API, and interface remain later phases.
 
 ## What SmartPick aims to do
 
@@ -118,6 +119,26 @@ text are validated for the first smartphone catalogue.
 See [the hybrid retrieval report](docs/HYBRID_RETRIEVAL.md) for the pinned model, normalization,
 benchmark conditions, reproduction commands, and limitations.
 
+## PostgreSQL and pgvector storage
+
+Phase 4 expects an existing PostgreSQL database with the pgvector extension available. Set
+`SEARCHRANK_DATABASE_URL` in your local environment as described in
+[the storage guide](docs/STORAGE.md). The configured database is synchronized to the supplied
+catalogue: ingestion upserts its records and removes stored IDs absent from that catalogue.
+
+```powershell
+python -m searchrank_ai.storage ingest --catalogue data/processed/suresh_91mobiles_2008_2026/catalogue.csv --semantic-index artifacts/semantic/phase3-index.npz
+python -m searchrank_ai.storage details 91mobiles:xiaomi-redmi-turbo-5
+```
+
+Ingestion validates the catalogue hash, model identity, vector dimensions, and product alignment
+before database writes. Product lookup preserves requested order and reports unknown IDs explicitly.
+The existing in-memory hybrid retriever remains available.
+
+The Phase 4 suite passed 191 tests; one optional live-database test was skipped. Real catalogue
+and embedding alignment was validated locally. No live database result is claimed for this run.
+Use a disposable database for the optional integration test documented in the storage guide.
+
 ## Project map
 
 | Path | Purpose |
@@ -137,7 +158,7 @@ benchmark conditions, reproduction commands, and limitations.
 | 1 | First category dataset audit, schema, and cleaning | Complete: smartphones |
 | 2 | BM25 keyword retrieval baseline | Complete |
 | 3 | Semantic and hybrid retrieval with strict filters | Complete |
-| 4 | PostgreSQL and pgvector storage | Not started |
+| 4 | PostgreSQL and pgvector storage | Complete |
 | 5 | Bounded agent workflow and evidence verification | Not started |
 | 6 | API and demonstration interface | Not started |
 | 7 | Evaluation, hardening, and Docker | Not started |
@@ -148,7 +169,8 @@ benchmark conditions, reproduction commands, and limitations.
 SmartPick-AI began from an adapted SearchRank-AI Phase 0 foundation and now records its own
 development history. Phase 2 adapts the original BM25 implementation and tests as new commits in
 this repository. Phase 3 likewise adapts the source semantic, hybrid, and constraint components
-into new SmartPick-AI commits. The retained audit reports show how evidence changed the catalogue decision,
+into new SmartPick-AI commits. Phase 4 adapts the storage implementation, including its transaction
+fix and regression test. The retained audit reports show how evidence changed the catalogue decision,
 including rejected laptop and Amazon-phone candidates. They are engineering evidence, not active
 catalogue data.
 

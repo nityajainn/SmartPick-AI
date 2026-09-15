@@ -1,5 +1,21 @@
 # Evaluation
 
+## 2026-09-15 — SmartPick-AI Phase 4 validation
+
+The isolated Phase 4 copy passed 191 tests in 3.13 seconds, with one optional live-database
+integration test skipped because no disposable test database was configured for this run.
+Ruff lint, formatting for 33 files, and dependency consistency checks passed.
+
+The storage loader validated 3,062 real catalogue records aligned with the 384-dimensional
+semantic artifact, catalogue SHA-256
+`c3428dd04e5d02c6a66ce00f5961f6b1f6ba9dcc30d86a37ffde84523619c7ea`, and the pinned
+`all-MiniLM-L6-v2@c21050a7ef692090620a6d037dd736908f9c7cf6` encoder.
+This verifies local input compatibility; it is not evidence of live database ingestion.
+
+Tests cover conversion, schema SQL, parameterized ingestion, missing-ID handling, dimensions,
+cosine result mapping, and the explicit-transaction/autocommit regression. No new retrieval
+quality or live database performance metric is claimed. See [the storage guide](STORAGE.md).
+
 ## 2026-09-14 — SmartPick-AI Phase 3 validation
 
 The isolated Phase 3 copy passed 182 tests in 1.90 seconds. Ruff lint and formatting checks passed

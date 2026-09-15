@@ -70,9 +70,21 @@ the complete catalogue before normalization and ranking. Missing ratings fail th
 contradictory brand requirements are rejected. Hybrid scoring combines max-normalized eligible
 BM25 scores with shifted cosine similarity. The selected alpha is 0.25.
 
-The matrix stays in memory. PostgreSQL/pgvector, natural-language constraint extraction, an LLM,
-and the API remain later phases. Current search text and structured fields cover smartphones;
-other categories require validated schemas and evidence rather than assuming phone fields apply.
+The hybrid matrix stays in memory; Phase 4 adds a separate PostgreSQL/pgvector storage boundary.
+Natural-language constraint extraction, an LLM, and the API remain later phases. Current search
+text and structured fields cover smartphones; other categories require validated schemas and evidence.
+
+## Phase 4 persistence
+
+`storage.py` validates the 18-field catalogue and aligned semantic vectors before synchronizing
+complete product records, embeddings, and provenance metadata in PostgreSQL. Ingestion uses an
+advisory lock and one explicit transaction for upserts, stale-ID removal, and metadata replacement.
+Standalone reads and type registration use autocommit so they cannot leave an outer transaction
+that silently discards later writes when the connection closes.
+
+Product lookup preserves requested order and reports missing IDs separately. Exact pgvector cosine
+search accepts a validated query embedding and returns complete evidence with deterministic ties.
+Database-backed hybrid scoring, connection pooling, and an API are not part of this checkpoint.
 
 ## Target request flow
 
