@@ -92,3 +92,21 @@ No retrieval implementation, database, agent workflow, API, interface, or Phase 
   result is claimed. No database service was created or changed.
 - Worked only in the isolated SmartPick-AI preparation copy; Project 1's uncommitted changes
   were excluded. No Phase 5 agent implementation, API, interface, or container setup was included.
+
+## 2026-09-16 — Phase 5: bounded agentic RAG and evidence tools
+
+- Adapted the final committed source Phase 5 snapshot, including the verification review fixes,
+  into SmartPick-AI's independent history.
+- Added typed workflow contracts, catalogue search, product details, deterministic evidence
+  verification, comparison policy, provider adapters, and one bounded LangGraph.
+- Preserved the four-tool-call ceiling, one reformulation limit, strict stored-record checks,
+  structured missing-information validation, and directional comparison safeguards.
+- Updated setup, architecture, and limitations while retaining the general product-search
+  presentation and the first smartphone catalogue's implemented contracts.
+- Validation: 261 tests passed, with two optional live integrations skipped, in 4.82 seconds.
+  Ruff lint passed; formatting passed for 43 files; dependency consistency passed in the reused
+  Python environment.
+- Live LLM testing was disabled and no disposable test database was configured for this run.
+  No live-provider quality, paid API usage, or live-database result is claimed.
+- Used only committed source files from Project 1; its uncommitted Gemini work was excluded.
+  No Phase 6 API or interface, Phase 7 evaluation infrastructure, or Gemini integration was added.

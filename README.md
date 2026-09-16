@@ -9,7 +9,7 @@ can be traced to catalogue records.
 
 ## Current status
 
-**Phases 0 through 4 are complete.** Phase 1 establishes smartphones as the first evaluated catalogue
+**Phases 0 through 5 are complete.** Phase 1 establishes smartphones as the first evaluated catalogue
 category. The adopted 91mobiles source audit retains 3,062 of 4,000 rows as price- and
 capacity-filter-ready smartphones. The reproducible catalogue includes stable IDs, INR prices,
 explicit RAM and storage, normalized ratings, comparison specifications, dates, and source URLs.
@@ -30,7 +30,8 @@ The implemented search supports BM25, semantic, and hybrid ranking with traceabl
 source URLs, and score components. Phase 3 adds strict price, RAM, storage, rating, and brand
 filters, plus a reviewed 20-case retrieval benchmark. Phase 4 adds PostgreSQL/pgvector persistence,
 transactional catalogue ingestion, ordered product lookup, and database vector search.
-An agent workflow, API, and interface remain later phases.
+Phase 5 connects retrieval and stored evidence through a bounded agent workflow with deterministic
+claim verification. The API and interface remain later phases.
 
 ## What SmartPick aims to do
 
@@ -139,6 +140,26 @@ The Phase 4 suite passed 191 tests; one optional live-database test was skipped.
 and embedding alignment was validated locally. No live database result is claimed for this run.
 Use a disposable database for the optional integration test documented in the storage guide.
 
+## Bounded agent workflow
+
+Phase 5 provides a Python service boundary using one LangGraph workflow and three tools:
+catalogue search, product details, and evidence verification. It handles search, comparison,
+clarification, unsupported requests, conflicting constraints, no results, and rejected evidence.
+Each request permits at most four tool calls and one unsuccessful-search reformulation.
+
+The workflow rechecks retrieved database records against the original constraints before drafting
+an answer. Facts, citations, missing-information claims, and numeric comparison directions must
+pass deterministic verification before rendering. Catalogue text cannot authorize tool calls or
+relax constraints. The current contracts and evidence policy use the first smartphone catalogue.
+
+`MockLLMProvider` supports network-free tests. An optional OpenAI provider reads credentials and
+model configuration from the environment. There is no public workflow command or web interface
+in this checkpoint; assembly and provider setup are described in
+[the agent workflow guide](docs/AGENTIC_RAG.md).
+
+The current suite passed 261 tests; the optional live-provider and live-database tests were skipped.
+These tests validate routing and evidence checks with mocks, not real-model answer quality.
+
 ## Project map
 
 | Path | Purpose |
@@ -159,7 +180,7 @@ Use a disposable database for the optional integration test documented in the st
 | 2 | BM25 keyword retrieval baseline | Complete |
 | 3 | Semantic and hybrid retrieval with strict filters | Complete |
 | 4 | PostgreSQL and pgvector storage | Complete |
-| 5 | Bounded agent workflow and evidence verification | Not started |
+| 5 | Bounded agent workflow and evidence verification | Complete |
 | 6 | API and demonstration interface | Not started |
 | 7 | Evaluation, hardening, and Docker | Not started |
 | 8 | Final documentation and release | Not started |
@@ -170,7 +191,8 @@ SmartPick-AI began from an adapted SearchRank-AI Phase 0 foundation and now reco
 development history. Phase 2 adapts the original BM25 implementation and tests as new commits in
 this repository. Phase 3 likewise adapts the source semantic, hybrid, and constraint components
 into new SmartPick-AI commits. Phase 4 adapts the storage implementation, including its transaction
-fix and regression test. The retained audit reports show how evidence changed the catalogue decision,
+fix and regression test. Phase 5 adapts the bounded workflow and reviewed verification fixes.
+The retained audit reports show how evidence changed the catalogue decision,
 including rejected laptop and Amazon-phone candidates. They are engineering evidence, not active
 catalogue data.
 

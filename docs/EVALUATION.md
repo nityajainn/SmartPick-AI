@@ -1,5 +1,22 @@
 # Evaluation
 
+## 2026-09-16 — SmartPick-AI Phase 5 validation
+
+The isolated Phase 5 copy passed 261 tests in 4.82 seconds. Two optional tests were skipped:
+the live LLM test requires an explicit opt-in and the PostgreSQL test requires a disposable
+test database. Both were left disabled for this publication. Ruff lint, formatting for 43 files,
+and dependency consistency checks passed.
+
+Coverage includes search and comparison routes, clarification, unsupported/conflicting requests,
+bounded retries and tool calls, exact catalogue claims and citations, structured missing evidence,
+changed stored records, numerical comparison directions, and adversarial catalogue instructions.
+The reviewed verification fixes are included in this snapshot.
+
+Normal tests use scripted provider responses and synthetic evidence. These results establish
+tested control-flow and verification behavior, not live-model accuracy or broad end-to-end agent
+quality. No paid LLM request or live database write was performed. See
+[the workflow guide](AGENTIC_RAG.md) for the optional integration setup and limits.
+
 ## 2026-09-15 — SmartPick-AI Phase 4 validation
 
 The isolated Phase 4 copy passed 191 tests in 3.13 seconds, with one optional live-database

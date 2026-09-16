@@ -1,5 +1,21 @@
 # Decision Log
 
+## SP-015 — Adapt the bounded agent workflow with reviewed verification fixes
+
+- **Date:** 2026-09-16
+- **Decision:** Use one LangGraph, three application tools, at most four tool calls, and one
+  search reformulation. Keep filters, evidence matching, citations, and rendering deterministic.
+- **Provider boundary:** A scripted mock makes normal tests independent of paid APIs. An optional
+  real provider produces structured drafts rather than unrestricted final prose.
+- **Verification:** Recheck stored products against the request constraints; validate missing
+  evidence claims; bind numeric comparison fields and directions to recognized criteria.
+- **Alternative:** An open-ended autonomous tool loop would complicate termination and evidence
+  auditing without helping the scoped catalogue search and comparison use case.
+- **Limit:** Mock-driven tests do not establish real-model interpretation or answer quality.
+  Contracts and evidence policies currently cover the first smartphone catalogue.
+- **Source mapping:** Implementation `4496bb7`, tests `2cb869e`, documentation `0d41db8`,
+  and verification fix `f3ebeca` are adapted into new SmartPick-AI commits dated today.
+
 ## SP-014 — Adapt validated PostgreSQL and pgvector persistence
 
 - **Date:** 2026-09-15

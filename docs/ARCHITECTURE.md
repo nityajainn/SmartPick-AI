@@ -71,7 +71,7 @@ contradictory brand requirements are rejected. Hybrid scoring combines max-norma
 BM25 scores with shifted cosine similarity. The selected alpha is 0.25.
 
 The hybrid matrix stays in memory; Phase 4 adds a separate PostgreSQL/pgvector storage boundary.
-Natural-language constraint extraction, an LLM, and the API remain later phases. Current search
+Phase 5 adds request interpretation and an optional LLM provider; the API remains a later phase. Current search
 text and structured fields cover smartphones; other categories require validated schemas and evidence.
 
 ## Phase 4 persistence
@@ -86,12 +86,30 @@ Product lookup preserves requested order and reports missing IDs separately. Exa
 search accepts a validated query embedding and returns complete evidence with deterministic ties.
 Database-backed hybrid scoring, connection pooling, and an API are not part of this checkpoint.
 
+## Phase 5 workflow and evidence boundary
+
+`workflow.py` owns one bounded LangGraph with separate search, comparison, clarification,
+unsupported, conflict, no-result, and verification-failure routes. `agent_models.py` defines
+typed request, claim, citation, and result contracts; `agent_tools.py` wraps retrieval, ordered
+product lookup, and deterministic verification. `evidence_policy.py` binds comparison criteria
+to allowed numeric fields and directions.
+
+The provider may interpret requests, reformulate an unsuccessful query once, and propose
+structured facts. It cannot override numerical constraints or citation checks. Stored products
+are rechecked against the original constraints before drafting. Missing-information claims must
+refer to recognized fields and retrieved IDs, with null stored values or explicitly unsupported
+attributes. Only verified facts and unavailable items are rendered.
+
+The maximum is four recorded tool calls per request. `llm.py` supplies the network-free mock
+and optional OpenAI adapter. Normal tests use synthetic evidence and scripted provider responses.
+The API and interface shown below remain planned.
+
 ## Target request flow
 
 ```text
 User
-  -> Streamlit demonstration
-  -> FastAPI backend
+  -> Streamlit demonstration (planned Phase 6)
+  -> FastAPI backend (planned Phase 6)
   -> one bounded LangGraph workflow
        -> catalogue search tool (BM25, semantic, or hybrid + strict filters)
        -> product details tool
@@ -101,9 +119,9 @@ User
 Storage: PostgreSQL + pgvector
 ```
 
-The workflow will use an LLM only for request understanding, essential clarification, one bounded
-query reformulation, and grounded response generation. Price, brand, rating, category-specific
-filters, and deterministic evidence checks will remain ordinary Python logic.
+The workflow uses the provider only for request understanding, essential clarification, one bounded
+query reformulation, and a structured answer draft. Price, brand, rating, category-specific
+filters, evidence checks, and final rendering remain deterministic Python logic.
 
 ## Planned component boundaries
 
@@ -116,4 +134,5 @@ filters, and deterministic evidence checks will remain ordinary Python logic.
 - **UI:** a single demonstration page that calls the API.
 - **Evaluation:** reviewed scenarios, reproducible metrics, and documented failure cases.
 
-These are target boundaries, not claims about completed functionality.
+Data, retrieval, storage, workflow, and provider boundaries are implemented through Phase 5.
+The API, interface, containerization, and broad agent-quality evaluation remain later phases.
