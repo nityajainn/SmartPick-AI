@@ -1,5 +1,19 @@
 # Decision Log
 
+## SP-016 — Expose the verified workflow through an API and local interface
+
+- **Date:** 2026-09-17
+- **Decision:** Adapt the reviewed Phase 6 FastAPI contracts, component-aware startup, HTTP client,
+  and Streamlit interface. Preserve ranking and deterministic evidence checks behind these boundaries.
+- **Presentation:** Use SmartPick-AI product-search branding while explicitly identifying the
+  first supported catalogue as smartphones. Retain internal package and environment names.
+- **Alternative:** Calling retrieval and storage directly from the interface would duplicate
+  orchestration and make the API boundary harder to test independently.
+- **Limits:** This is a local demonstration. Authentication, connection pooling, production
+  deployment controls, and broad live-model evaluation remain outside Phase 6.
+- **Source mapping:** API `3443850`, UI `f83df0e`, tests `55b5feb`, documentation `1fd0b41`,
+  and review fixes `f5718cf` are adapted into fresh SmartPick-AI commits.
+
 ## SP-015 — Adapt the bounded agent workflow with reviewed verification fixes
 
 - **Date:** 2026-09-16

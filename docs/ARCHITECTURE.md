@@ -71,7 +71,7 @@ contradictory brand requirements are rejected. Hybrid scoring combines max-norma
 BM25 scores with shifted cosine similarity. The selected alpha is 0.25.
 
 The hybrid matrix stays in memory; Phase 4 adds a separate PostgreSQL/pgvector storage boundary.
-Phase 5 adds request interpretation and an optional LLM provider; the API remains a later phase. Current search
+Phase 5 adds request interpretation and an optional LLM provider; Phase 6 adds the API. Current search
 text and structured fields cover smartphones; other categories require validated schemas and evidence.
 
 ## Phase 4 persistence
@@ -84,7 +84,8 @@ that silently discards later writes when the connection closes.
 
 Product lookup preserves requested order and reports missing IDs separately. Exact pgvector cosine
 search accepts a validated query embedding and returns complete evidence with deterministic ties.
-Database-backed hybrid scoring, connection pooling, and an API are not part of this checkpoint.
+Database-backed hybrid scoring and connection pooling remain deferred. Phase 6 exposes stored
+product lookup through the API.
 
 ## Phase 5 workflow and evidence boundary
 
@@ -102,14 +103,14 @@ attributes. Only verified facts and unavailable items are rendered.
 
 The maximum is four recorded tool calls per request. `llm.py` supplies the network-free mock
 and optional OpenAI adapter. Normal tests use synthetic evidence and scripted provider responses.
-The API and interface shown below remain planned.
+Phase 6 connects this workflow to the API and interface shown below.
 
-## Target request flow
+## Implemented request flow
 
 ```text
 User
-  -> Streamlit demonstration (planned Phase 6)
-  -> FastAPI backend (planned Phase 6)
+  -> Streamlit demonstration
+  -> FastAPI backend
   -> one bounded LangGraph workflow
        -> catalogue search tool (BM25, semantic, or hybrid + strict filters)
        -> product details tool
@@ -123,7 +124,20 @@ The workflow uses the provider only for request understanding, essential clarifi
 query reformulation, and a structured answer draft. Price, brand, rating, category-specific
 filters, evidence checks, and final rendering remain deterministic Python logic.
 
-## Planned component boundaries
+## Phase 6 application boundary
+
+`api_models.py` validates requests and response contracts. `api.py` exposes health, direct search,
+grounded queries, and stored product lookup with consistent error responses. Blocking work runs
+in FastAPI's thread pool. `services.py` loads dependencies once and reports readiness separately
+for search, product lookup, and agent queries; embedding startup uses cached files by default.
+
+`streamlit_app.py` uses only the HTTP client in `api_client.py`. The interface displays ranked
+results, extracted constraints, verified answers, and workflow evidence without duplicating
+retrieval or verification logic. Catalogue labels are escaped before controlled Markdown rendering.
+The local demonstration does not provide authentication, pooling, or production deployment controls.
+See [the API and interface guide](API_AND_UI.md).
+
+## Component boundaries
 
 - **Data:** schema, cleaning, provenance, and reproducible ingestion.
 - **Retrieval:** independently measurable BM25, semantic, and hybrid implementations.
@@ -134,5 +148,5 @@ filters, evidence checks, and final rendering remain deterministic Python logic.
 - **UI:** a single demonstration page that calls the API.
 - **Evaluation:** reviewed scenarios, reproducible metrics, and documented failure cases.
 
-Data, retrieval, storage, workflow, and provider boundaries are implemented through Phase 5.
-The API, interface, containerization, and broad agent-quality evaluation remain later phases.
+Data, retrieval, storage, workflow, provider, API, and interface boundaries are implemented
+through Phase 6. Containerization and broad agent-quality evaluation remain later phases.

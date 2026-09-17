@@ -1,5 +1,23 @@
 # Evaluation
 
+## 2026-09-17 — SmartPick-AI Phase 6 validation
+
+The isolated Phase 6 copy passed **280 tests, with 2 optional integrations skipped, in 9.84 seconds**.
+The live LLM test was disabled and no disposable test database was configured.
+Ruff lint, formatting for 53 files, and dependency consistency checks passed.
+The run emitted one dependency deprecation warning from Starlette's test client about AnyIO's
+BlockingPortal alias; there were no test failures.
+
+Coverage includes the four API routes, strict request validation, consistent errors, partial
+readiness, HTTP transport, Streamlit rendering, and reviewed workflow/serialization fixes.
+The interface smoke test verifies the SmartPick-AI title and both search and query tabs.
+Source comparison confirms that code and tests match the final Phase 6 snapshot except for
+public branding and its title assertion.
+
+Tests used synthetic services and scripted providers. No paid API requests or live database
+writes were made. No live browser interaction, API latency benchmark, live-model quality result,
+or production deployment is claimed. See [the application guide](API_AND_UI.md).
+
 ## 2026-09-16 — SmartPick-AI Phase 5 validation
 
 The isolated Phase 5 copy passed 261 tests in 4.82 seconds. Two optional tests were skipped:

@@ -110,3 +110,18 @@ No retrieval implementation, database, agent workflow, API, interface, or Phase 
   No live-provider quality, paid API usage, or live-database result is claimed.
 - Used only committed source files from Project 1; its uncommitted Gemini work was excluded.
   No Phase 6 API or interface, Phase 7 evaluation infrastructure, or Gemini integration was added.
+
+## 2026-09-17 — Phase 6: API and local demonstration interface
+
+- Adapted the final committed Phase 6 snapshot `f5718cf`, including review fixes, into the
+  isolated SmartPick-AI copy. Original Project 1 working files were not used or edited.
+- Added FastAPI health, search, query, and product endpoints; validated request/response models;
+  component-aware startup; an HTTP client; and the Streamlit search/comparison interface.
+- Applied SmartPick-AI titles and general product-search wording, explicitly retaining smartphones
+  as the first supported catalogue. Updated the roadmap, setup guide, architecture, and limits.
+- Validation: 280 tests passed, with two optional live integrations skipped, in 9.84 seconds.
+  Ruff lint passed, formatting passed for 53 files, and dependency consistency passed.
+- Recorded the Starlette/AnyIO test-client deprecation warning. No live provider requests or
+  database writes were made; the optional tests remained disabled.
+- Compared imported code and tests against the reviewed source snapshot; only public branding
+  and the corresponding title assertion differ. Phase 7 and later features were excluded.

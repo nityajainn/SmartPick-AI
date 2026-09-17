@@ -9,7 +9,7 @@ can be traced to catalogue records.
 
 ## Current status
 
-**Phases 0 through 5 are complete.** Phase 1 establishes smartphones as the first evaluated catalogue
+**Phases 0 through 6 are complete.** Phase 1 establishes smartphones as the first evaluated catalogue
 category. The adopted 91mobiles source audit retains 3,062 of 4,000 rows as price- and
 capacity-filter-ready smartphones. The reproducible catalogue includes stable IDs, INR prices,
 explicit RAM and storage, normalized ratings, comparison specifications, dates, and source URLs.
@@ -31,7 +31,8 @@ source URLs, and score components. Phase 3 adds strict price, RAM, storage, rati
 filters, plus a reviewed 20-case retrieval benchmark. Phase 4 adds PostgreSQL/pgvector persistence,
 transactional catalogue ingestion, ordered product lookup, and database vector search.
 Phase 5 connects retrieval and stored evidence through a bounded agent workflow with deterministic
-claim verification. The API and interface remain later phases.
+claim verification. Phase 6 exposes the system through a FastAPI backend and a local Streamlit
+search/comparison interface.
 
 ## What SmartPick aims to do
 
@@ -113,8 +114,8 @@ python -m searchrank_ai.retrieval search --catalogue data/processed/suresh_91mob
 ```
 
 Strict filters run before ranking. Missing ratings fail a minimum-rating requirement, and
-conflicting included/excluded brands are rejected. Constraints must be supplied explicitly;
-natural-language interpretation remains a later phase. The current filters and semantic search
+conflicting included/excluded brands are rejected. These command-line filters are supplied explicitly;
+natural-language interpretation is available through the configured agent workflow. The filters and semantic search
 text are validated for the first smartphone catalogue.
 
 See [the hybrid retrieval report](docs/HYBRID_RETRIEVAL.md) for the pinned model, normalization,
@@ -153,12 +154,47 @@ pass deterministic verification before rendering. Catalogue text cannot authoriz
 relax constraints. The current contracts and evidence policy use the first smartphone catalogue.
 
 `MockLLMProvider` supports network-free tests. An optional OpenAI provider reads credentials and
-model configuration from the environment. There is no public workflow command or web interface
-in this checkpoint; assembly and provider setup are described in
+model configuration from the environment. Phase 6 connects the workflow to the API and interface
+described below; provider setup is described in
 [the agent workflow guide](docs/AGENTIC_RAG.md).
 
-The current suite passed 261 tests; the optional live-provider and live-database tests were skipped.
+The Phase 5 suite passed 261 tests; the optional live-provider and live-database tests were skipped.
 These tests validate routing and evidence checks with mocks, not real-model answer quality.
+
+## Run the API and local interface
+
+Generate the catalogue and retrieval indexes using the commands above. Configure environment
+variables from `.env.example` in your shell or an ignored local environment loader. Start the API:
+
+```powershell
+python -m uvicorn searchrank_ai.api:app --reload
+```
+
+In a second terminal, activate the same environment and start the interface:
+
+```powershell
+$env:SEARCHRANK_API_URL = "http://127.0.0.1:8000"
+python -m streamlit run src/searchrank_ai/streamlit_app.py
+```
+
+Open the local address printed by Streamlit. Search supports BM25, semantic, and hybrid retrieval
+with strict filters. Ask / Compare displays verified answers and their supporting workflow evidence.
+Smartphones remain the first implemented catalogue; the general product-search design does not
+imply support for other category schemas yet.
+
+The API provides `GET /health`, `POST /search`, `POST /query`, and
+`GET /products/{product_id}`, with interactive documentation at `http://127.0.0.1:8000/docs`.
+Search needs the local catalogue, indexes, and cached embedding model. Product lookup also needs
+PostgreSQL; natural-language queries additionally need the configured real provider.
+Health reports which components are ready, so missing optional setup does not hide working search.
+The mock provider is reserved for scripted tests.
+
+This is a local demonstration without authentication or production deployment controls.
+See [the API and interface guide](docs/API_AND_UI.md) for setup, response contracts, and limitations.
+
+Phase 6 validation on September 17, 2026: **280 tests passed, 2 optional integrations skipped**.
+Lint, formatting, and dependency checks passed. API and interface tests use synthetic services;
+this run does not establish live-provider quality or production readiness.
 
 ## Project map
 
@@ -181,7 +217,7 @@ These tests validate routing and evidence checks with mocks, not real-model answ
 | 3 | Semantic and hybrid retrieval with strict filters | Complete |
 | 4 | PostgreSQL and pgvector storage | Complete |
 | 5 | Bounded agent workflow and evidence verification | Complete |
-| 6 | API and demonstration interface | Not started |
+| 6 | API and demonstration interface | Complete |
 | 7 | Evaluation, hardening, and Docker | Not started |
 | 8 | Final documentation and release | Not started |
 
@@ -192,6 +228,7 @@ development history. Phase 2 adapts the original BM25 implementation and tests a
 this repository. Phase 3 likewise adapts the source semantic, hybrid, and constraint components
 into new SmartPick-AI commits. Phase 4 adapts the storage implementation, including its transaction
 fix and regression test. Phase 5 adapts the bounded workflow and reviewed verification fixes.
+Phase 6 adapts the API, Streamlit interface, and reviewed integration fixes with SmartPick-AI branding.
 The retained audit reports show how evidence changed the catalogue decision,
 including rejected laptop and Amazon-phone candidates. They are engineering evidence, not active
 catalogue data.
