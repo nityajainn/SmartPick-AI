@@ -1,5 +1,26 @@
 # Evaluation
 
+## 2026-09-18 — SmartPick-AI Phase 7 validation
+
+The isolated Phase 7 copy passed **315 tests, with 6 optional integrations skipped, in 11.02 seconds**.
+Ruff lint, formatting for 58 files, dependency checks, and Docker Compose configuration passed.
+Live HTTP, PostgreSQL, and paid-provider tests remained disabled. The run emitted the known
+Starlette/AnyIO test-client deprecation warning.
+
+The 16-case scripted agent run passed every expected route, status, tool sequence, and retry count.
+All four applicable constrained cases and eight expected answered citation cases passed;
+unsupported-claim rate was zero, with 2.1875 average tool calls. These are synthetic regression
+results around scripted model decisions, not measurements of real-provider understanding.
+
+The offline CPU retrieval rerun used cached pinned MiniLM weights and existing aligned artifacts
+for 3,062 catalogue records. All five configurations reproduced the Phase 3 table below across
+20 reviewed cases. Alpha 0.25 remained selected, with Recall@10 0.925000, MRR@10 0.950000,
+NDCG@10 0.928558, and constraint satisfaction 1.000000. No index was rebuilt.
+
+The [Phase 7 report](PHASE_7_EVALUATION.md) separates today's results from the original source's
+historical index-build timings, API latency, and live Docker evidence. No new live deployment,
+database ingestion, or paid-provider result is claimed.
+
 ## 2026-09-17 — SmartPick-AI Phase 6 validation
 
 The isolated Phase 6 copy passed **280 tests, with 2 optional integrations skipped, in 9.84 seconds**.
@@ -89,7 +110,8 @@ Generated artifacts are excluded from Git. See [the BM25 report](BM25_RETRIEVAL.
 ## Historical source evaluation records
 
 Phase 2 provides a reviewed exact-model BM25 benchmark, expanded by the Phase 3 comparison above.
-Agent evaluation remains a later phase. Earlier entries below retain the source audit dates.
+At those historical checkpoints, agent evaluation remained a later phase. Earlier entries below
+retain the source audit dates; current agent results are recorded above.
 
 On 2026-09-02, the Phase 0 suite ran on Windows with Python 3.12.13 and pytest 8.4.2:
 3 smoke tests passed in 0.03 seconds. This is an engineering validation result, not a search-quality

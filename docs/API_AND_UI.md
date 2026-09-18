@@ -87,6 +87,13 @@ path, tool calls, and verification summary.
 
 ## Boundary and limitations
 
+Phase 7 adds a read-only storage readiness probe to each health request. It checks the ingestion
+schema/version, recorded and actual row counts, retrieval catalogue hash when available, and a
+readable complete product. A storage failure marks products and dependent queries unready while
+preserving available local search. Error messages omit driver credentials and internal details.
+The probe does not repair storage or audit every row/vector. See
+[the Phase 7 report](PHASE_7_EVALUATION.md) for evaluation and Compose setup.
+
 - Streamlit calls FastAPI over HTTP through `api_client.py`; it does not import the retriever,
   database adapter, LangGraph workflow, or evidence rules.
 - Blocking model/database/workflow calls run in FastAPI's thread pool so they do not block the

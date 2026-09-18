@@ -137,6 +137,21 @@ retrieval or verification logic. Catalogue labels are escaped before controlled 
 The local demonstration does not provide authentication, pooling, or production deployment controls.
 See [the API and interface guide](API_AND_UI.md).
 
+## Phase 7 evaluation and local containers
+
+`evaluation.py` runs reviewed scripted-agent scenarios and warmed in-process search timing.
+The agent runner records per-case routes, status, tools, retries, verification outcomes, and metric
+denominators. Metrics without applicable cases are null with a zero denominator; an empty suite is
+invalid. These controls test behavior around supplied model decisions, not real-model understanding.
+
+Storage readiness uses a read-only ingestion/readability probe. The health endpoint refreshes its
+state on every request; incomplete or mismatched storage also marks dependent queries unready.
+The Docker API health check requires both retrieval and products to be ready.
+
+The two-stage image runs as an unprivileged user. Compose defines the database, API, UI, and
+optional ingestion service; local data mounts are read-only. The `smartpick-ai` project name
+separates its named volumes from SearchRank-AI. Host ports still need to be free when starting it.
+
 ## Component boundaries
 
 - **Data:** schema, cleaning, provenance, and reproducible ingestion.
@@ -149,4 +164,5 @@ See [the API and interface guide](API_AND_UI.md).
 - **Evaluation:** reviewed scenarios, reproducible metrics, and documented failure cases.
 
 Data, retrieval, storage, workflow, provider, API, and interface boundaries are implemented
-through Phase 6. Containerization and broad agent-quality evaluation remain later phases.
+through Phase 6. Phase 7 adds containers and controlled retrieval/agent evaluation. Broad live-model
+quality, production deployment, and concurrent load remain outside the measured scope.

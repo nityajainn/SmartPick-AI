@@ -1,5 +1,23 @@
 # Decision Log
 
+## SP-017 — Adapt controlled evaluation and isolated local container configuration
+
+- **Date:** 2026-09-18
+- **Decision:** Adapt the reviewed Phase 7 evaluation runners, 16 scripted agent scenarios,
+  Docker configuration, and readiness/empty-metric fixes from source snapshot `9ee7afe`.
+- **Evidence:** Keep catalogue retrieval judgments separate from scripted-agent metrics and record
+  metric denominators. Missing categories produce null values instead of misleading perfect scores.
+- **Readiness:** Probe ingestion metadata, row counts, catalogue identity, and product readability;
+  a mere database connection does not establish that product lookup is usable.
+- **Isolation:** Name the Compose project `smartpick-ai` so its named volumes are separate.
+  Retain package/environment compatibility and the current smartphone schema.
+- **Alternative:** A live-provider-only benchmark would add cost and variability without replacing
+  deterministic route/evidence regression coverage. It remains additional future validation.
+- **Limits:** Today's offline checks do not revalidate historical live Docker or database results.
+  No production deployment or live-model quality is claimed.
+- **Source mapping:** Evaluation `e7f0e41`, containers `6877a11`, documentation `02d8a34`,
+  and reviewed fixes `9ee7afe` are adapted into fresh SmartPick-AI commits.
+
 ## SP-016 — Expose the verified workflow through an API and local interface
 
 - **Date:** 2026-09-17

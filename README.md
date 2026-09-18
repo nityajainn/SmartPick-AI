@@ -3,13 +3,13 @@
 **Product choices, backed by catalogue evidence.**
 
 SmartPick-AI is an incremental project for searching and comparing products against clear
-requirements such as budget, brand, rating, and category-specific specifications. The planned
+requirements such as budget, brand, rating, and category-specific specifications. The
 system combines retrieval-augmented generation (RAG) with deterministic filters so recommendations
 can be traced to catalogue records.
 
 ## Current status
 
-**Phases 0 through 6 are complete.** Phase 1 establishes smartphones as the first evaluated catalogue
+**Phases 0 through 7 are complete.** Phase 1 establishes smartphones as the first evaluated catalogue
 category. The adopted 91mobiles source audit retains 3,062 of 4,000 rows as price- and
 capacity-filter-ready smartphones. The reproducible catalogue includes stable IDs, INR prices,
 explicit RAM and storage, normalized ratings, comparison specifications, dates, and source URLs.
@@ -32,7 +32,8 @@ filters, plus a reviewed 20-case retrieval benchmark. Phase 4 adds PostgreSQL/pg
 transactional catalogue ingestion, ordered product lookup, and database vector search.
 Phase 5 connects retrieval and stored evidence through a bounded agent workflow with deterministic
 claim verification. Phase 6 exposes the system through a FastAPI backend and a local Streamlit
-search/comparison interface.
+search/comparison interface. Phase 7 adds reviewed evaluation scenarios, storage readiness checks,
+and a Docker Compose setup for local use.
 
 ## What SmartPick aims to do
 
@@ -196,13 +197,49 @@ Phase 6 validation on September 17, 2026: **280 tests passed, 2 optional integra
 Lint, formatting, and dependency checks passed. API and interface tests use synthetic services;
 this run does not establish live-provider quality or production readiness.
 
+## Evaluation and Docker
+
+Phase 7 combines 20 catalogue-grounded retrieval cases with 16 scripted agent scenarios.
+The agent benchmark checks workflow routes, constraints, citations, refusals, and rejected
+evidence using synthetic products and scripted provider responses. It does not measure live-model
+understanding or establish accuracy across all product categories.
+
+```powershell
+python -m searchrank_ai.evaluation agent --cases evaluation/agent_scenarios_v1.json --output artifacts/evaluation/phase7-agent.json
+```
+
+Reports refuse to overwrite an existing file; choose a fresh output name for repeat runs.
+See [the Phase 7 report](docs/PHASE_7_EVALUATION.md) for retrieval and API timing commands,
+measured results, historical source evidence, and limitations.
+
+The local Docker setup includes PostgreSQL/pgvector, the API, the interface, and opt-in ingestion.
+Generate the catalogue and indexes first, then run:
+
+```powershell
+docker compose up -d database
+docker compose --profile setup run --rm --build ingest
+docker compose up --build -d api ui
+docker compose ps
+```
+
+Compose uses the `smartpick-ai` project name, giving it separate database and model-cache volumes.
+Default API/UI ports are 8000/8501 on localhost; if another project is using them, choose free host
+ports in this copy's Compose file. The database is not exposed on a host port. Model files may be
+downloaded into the cache on first startup; provider credentials come from your local environment.
+Data and artifacts are mounted read-only and excluded from the image.
+
+Today’s validation on September 18, 2026 passed **315 tests, with 6 optional integrations skipped**.
+Lint, formatting, dependency checks, and Compose configuration validation passed.
+Live container, database, and paid-provider tests were not run for this publication.
+The source project's earlier Docker measurements are explicitly labelled historical.
+
 ## Project map
 
 | Path | Purpose |
 |---|---|
 | `src/searchrank_ai/` | Package code; original internal package name retained |
 | `tests/` | Synthetic automated tests |
-| `evaluation/` | Reviewed retrieval queries and relevance judgments |
+| `evaluation/` | Reviewed retrieval queries, relevance judgments, and scripted agent scenarios |
 | `docs/` | Architecture, decisions, audits, build log, and evaluation notes |
 | `data/` | Local raw and processed data, ignored by Git |
 | `artifacts/` | Generated audits and later retrieval artifacts, ignored by Git |
@@ -218,7 +255,7 @@ this run does not establish live-provider quality or production readiness.
 | 4 | PostgreSQL and pgvector storage | Complete |
 | 5 | Bounded agent workflow and evidence verification | Complete |
 | 6 | API and demonstration interface | Complete |
-| 7 | Evaluation, hardening, and Docker | Not started |
+| 7 | Evaluation, hardening, and Docker | Complete |
 | 8 | Final documentation and release | Not started |
 
 ## Provenance
@@ -229,6 +266,7 @@ this repository. Phase 3 likewise adapts the source semantic, hybrid, and constr
 into new SmartPick-AI commits. Phase 4 adapts the storage implementation, including its transaction
 fix and regression test. Phase 5 adapts the bounded workflow and reviewed verification fixes.
 Phase 6 adapts the API, Streamlit interface, and reviewed integration fixes with SmartPick-AI branding.
+Phase 7 adapts the evaluation runners, container setup, and reviewed readiness/metric fixes.
 The retained audit reports show how evidence changed the catalogue decision,
 including rejected laptop and Amazon-phone candidates. They are engineering evidence, not active
 catalogue data.

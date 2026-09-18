@@ -125,3 +125,24 @@ No retrieval implementation, database, agent workflow, API, interface, or Phase 
   database writes were made; the optional tests remained disabled.
 - Compared imported code and tests against the reviewed source snapshot; only public branding
   and the corresponding title assertion differ. Phase 7 and later features were excluded.
+
+## 2026-09-18 — Phase 7: evaluation, readiness, and containers
+
+- Adapted source snapshot `9ee7afe`, including the readiness and empty-metric review fixes,
+  in an isolated SmartPick-AI copy. Later Gemini/UI-redesign work was excluded.
+- Added 16 reviewed scripted agent scenarios, evaluator and API-timing commands, offline retrieval
+  evaluation support, container setup, and read-only ingestion/readability health probes.
+- Retained SmartPick-AI API/interface branding and named the Compose project `smartpick-ai`
+  to keep named volumes separate from the original project.
+- Validation: 315 tests passed, 6 optional integrations skipped, in 11.02 seconds. Ruff lint,
+  formatting for 58 files, dependency checks, and Compose configuration validation passed.
+- An initial run had 57 setup errors from a missing temporary-directory parent; creating the local
+  artifacts directory resolved them without changing code or assertions. One dependency
+  deprecation warning remained in the passing run.
+- All 16 scripted agent scenarios passed. Live HTTP, database, and paid-provider tests were
+  disabled; no containers were started or live database writes made.
+- Updated setup, architecture, decisions, and evaluation evidence. Historical source measurements
+  retain their actual dates and are explicitly distinguished from SmartPick-AI validation.
+- Re-ran all 20 retrieval cases offline on CPU with cached model weights and the existing
+  3,062-product artifacts, read-only. All five configurations reproduced the recorded metrics;
+  alpha 0.25 remained selected. No new index build or API-latency measurement was performed.
