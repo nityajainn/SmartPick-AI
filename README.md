@@ -9,7 +9,8 @@ can be traced to catalogue records.
 
 ## Current status
 
-**Phases 0 through 7 are complete.** Phase 1 establishes smartphones as the first evaluated catalogue
+**Phases 0 through 8 are complete through release preparation.** A versioned GitHub release and
+production deployment have not been published. Phase 1 establishes smartphones as the first evaluated catalogue
 category. The adopted 91mobiles source audit retains 3,062 of 4,000 rows as price- and
 capacity-filter-ready smartphones. The reproducible catalogue includes stable IDs, INR prices,
 explicit RAM and storage, normalized ratings, comparison specifications, dates, and source URLs.
@@ -34,6 +35,18 @@ Phase 5 connects retrieval and stored evidence through a bounded agent workflow 
 claim verification. Phase 6 exposes the system through a FastAPI backend and a local Streamlit
 search/comparison interface. Phase 7 adds reviewed evaluation scenarios, storage readiness checks,
 and a Docker Compose setup for local use.
+
+Phase 8 consolidates setup, demonstration, results, interview notes, and release checks.
+The current package remains `0.1.0.dev0`.
+
+| Guide | What it covers |
+|---|---|
+| [Setup](docs/SETUP.md) | Installation, data preparation, Docker, and troubleshooting |
+| [Demonstration](docs/DEMO.md) | Search and optional agent comparison walkthrough |
+| [Architecture](docs/ARCHITECTURE.md) | Component boundaries and evidence flow |
+| [Results](docs/RESULTS.md) | Measured metrics, denominators, and reproduction |
+| [Interview notes](docs/INTERVIEW.md) | Design trade-offs and accurate project claims |
+| [Release preparation](docs/RELEASE.md) | Validation and remaining versioned-release decisions |
 
 ## What SmartPick aims to do
 
@@ -228,10 +241,20 @@ ports in this copy's Compose file. The database is not exposed on a host port. M
 downloaded into the cache on first startup; provider credentials come from your local environment.
 Data and artifacts are mounted read-only and excluded from the image.
 
-Today’s validation on September 18, 2026 passed **315 tests, with 6 optional integrations skipped**.
+Phase 7 validation on September 18, 2026 passed **315 tests, with 6 optional integrations skipped**.
 Lint, formatting, dependency checks, and Compose configuration validation passed.
 Live container, database, and paid-provider tests were not run for this publication.
 The source project's earlier Docker measurements are explicitly labelled historical.
+
+Phase 8 validation on September 22 passed **324 tests, with 6 optional integrations skipped**.
+Lint, formatting, dependency checks, and Compose configuration validation passed.
+The release checker verifies local documentation links and flags common publication mistakes:
+
+```powershell
+python scripts/check_release.py
+```
+
+It checks candidate files, not Git history, remote URLs, or all possible credential formats.
 
 ## Project map
 
@@ -241,6 +264,7 @@ The source project's earlier Docker measurements are explicitly labelled histori
 | `tests/` | Synthetic automated tests |
 | `evaluation/` | Reviewed retrieval queries, relevance judgments, and scripted agent scenarios |
 | `docs/` | Architecture, decisions, audits, build log, and evaluation notes |
+| `scripts/check_release.py` | Read-only local links and release file checks |
 | `data/` | Local raw and processed data, ignored by Git |
 | `artifacts/` | Generated audits and later retrieval artifacts, ignored by Git |
 
@@ -256,7 +280,7 @@ The source project's earlier Docker measurements are explicitly labelled histori
 | 5 | Bounded agent workflow and evidence verification | Complete |
 | 6 | API and demonstration interface | Complete |
 | 7 | Evaluation, hardening, and Docker | Complete |
-| 8 | Final documentation and release | Not started |
+| 8 | Final documentation and release preparation | Complete; versioned release pending |
 
 ## Provenance
 
@@ -267,6 +291,8 @@ into new SmartPick-AI commits. Phase 4 adapts the storage implementation, includ
 fix and regression test. Phase 5 adapts the bounded workflow and reviewed verification fixes.
 Phase 6 adapts the API, Streamlit interface, and reviewed integration fixes with SmartPick-AI branding.
 Phase 7 adapts the evaluation runners, container setup, and reviewed readiness/metric fixes.
+Phase 8 adapts source documentation and release checks to the features present in this repository;
+later source Gemini and shopping-interface extensions are not included.
 The retained audit reports show how evidence changed the catalogue decision,
 including rejected laptop and Amazon-phone candidates. They are engineering evidence, not active
 catalogue data.

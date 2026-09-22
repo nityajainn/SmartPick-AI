@@ -166,3 +166,15 @@ separates its named volumes from SearchRank-AI. Host ports still need to be free
 Data, retrieval, storage, workflow, provider, API, and interface boundaries are implemented
 through Phase 6. Phase 7 adds containers and controlled retrieval/agent evaluation. Broad live-model
 quality, production deployment, and concurrent load remain outside the measured scope.
+
+## Phase 8 documentation and release checks
+
+The application boundaries remain unchanged. [Setup](SETUP.md), [demo](DEMO.md),
+[results](RESULTS.md), and [interview notes](INTERVIEW.md) describe the implemented checkpoint.
+`scripts/check_release.py` checks candidate files and local Markdown links without publishing,
+deleting, or modifying them. Its tests cover generated paths, redacted credential findings,
+file size/encoding, and missing link targets.
+
+[Release preparation](RELEASE.md) separates phase completion from version/tag creation and
+production deployment. The package remains `0.1.0.dev0`. Historical source additions beyond
+SmartPick-AI's imported Phase 7 snapshot do not become capabilities through documentation.

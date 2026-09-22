@@ -1,5 +1,21 @@
 # Evaluation
 
+## 2026-09-22 — SmartPick-AI Phase 8 validation
+
+The isolated copy passed **324 tests, with 6 optional integrations skipped, in 11.50 seconds**.
+Ruff lint, formatting for 61 Python files, dependency checks, and Compose configuration passed.
+The six skips cover four live HTTP cases, one real-provider test, and one PostgreSQL integration.
+One existing Starlette/AnyIO deprecation warning remains.
+
+The added regression tests cover the read-only release checker. Application code is unchanged
+from SmartPick-AI Phase 7. No new retrieval/agent benchmark, live provider request, database write,
+container build, or live browser test was performed. [Results](RESULTS.md) consolidates actual
+September 18 measurements and explicitly historical source timings.
+
+The release check passed across 74 candidate files. Local file links resolved and its bounded
+generated-path, environment-file, size, encoding, and credential-pattern checks reported no findings.
+It does not inspect remote URLs, heading anchors, Git history, or arbitrary credentials.
+
 ## 2026-09-18 — SmartPick-AI Phase 7 validation
 
 The isolated Phase 7 copy passed **315 tests, with 6 optional integrations skipped, in 11.02 seconds**.

@@ -1,5 +1,20 @@
 # Decision Log
 
+## SP-018 — Complete documentation against the published SmartPick-AI checkpoint
+
+- **Date:** 2026-09-22
+- **Decision:** Adapt source Phase 8 `dc0a35d` documentation and its read-only release checker.
+  Document the current API, two-tab interface, and optional OpenAI workflow with general product
+  presentation and smartphones as the first supported category.
+- **Scope:** Keep application code unchanged. Source Gemini and shortlist-interface extensions
+  were not part of the SmartPick-AI Phase 7 publication and are not implied by these guides.
+- **Evidence:** Preserve the September 18 SmartPick-AI benchmark results and identify source
+  timing observations as historical. Record only checks actually run on September 22.
+- **Alternative:** Copying the source guides unchanged would describe unavailable features and
+  attribute unrelated live-provider results to this repository.
+- **Release boundary:** Complete documentation and release preparation while retaining
+  `0.1.0.dev0`. A license, version bump, tag, and GitHub release require explicit decisions.
+
 ## SP-017 — Adapt controlled evaluation and isolated local container configuration
 
 - **Date:** 2026-09-18

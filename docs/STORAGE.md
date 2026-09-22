@@ -87,7 +87,8 @@ $env:SEARCHRANK_TEST_DATABASE_URL = "postgresql://username:password@localhost:54
 SmartPick-AI validation on 2026-09-15 passed 191 tests, Ruff lint and formatting for 33 files,
 and dependency consistency checks in the reused Python environment. The optional live integration
 test was skipped because no disposable test database was configured for this publication run.
-No live database result is claimed. Docker setup remains Phase 7 work.
+No live database result is claimed for that run. Docker setup is now documented in
+[the setup guide](SETUP.md) and [the Phase 7 report](PHASE_7_EVALUATION.md).
 
 ## Limitations
 
@@ -95,5 +96,6 @@ No live database result is claimed. Docker setup remains Phase 7 work.
   existing semantic/provider boundary.
 - Database-backed BM25 or complete hybrid scoring is not introduced; Phase 3 remains the measured
   retrieval implementation.
-- No connection pooling, migrations framework, API, agent, or approximate vector index exists yet.
+- Connection pooling, a migrations framework, and approximate vector indexes remain deferred.
+  Phases 5 and 6 add the workflow and API around stored product evidence.
 - Creating the pgvector extension may require a database administrator on managed PostgreSQL.

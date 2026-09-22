@@ -146,3 +146,19 @@ No retrieval implementation, database, agent workflow, API, interface, or Phase 
 - Re-ran all 20 retrieval cases offline on CPU with cached model weights and the existing
   3,062-product artifacts, read-only. All five configurations reproduced the recorded metrics;
   alpha 0.25 remained selected. No new index build or API-latency measurement was performed.
+
+## 2026-09-22 — Phase 8: final documentation and release preparation
+
+- Adapted committed source Phase 8 `dc0a35d` into the isolated SmartPick-AI copy.
+- Added setup, demonstration, measured-results, interview, and release-preparation guides matching
+  the current product-search presentation, smartphone catalogue, and Search / Ask / Compare UI.
+- Imported the source release checker and its nine tests; application code remains unchanged.
+- Updated README, architecture, storage notes, decisions, and evaluation records. Excluded claims
+  about source Gemini and shortlist-interface features absent from SmartPick-AI.
+- Validation: 324 tests passed, 6 optional integrations skipped, in 11.50 seconds. Ruff lint,
+  formatting for 61 files, dependency checks, and Compose configuration validation passed.
+  One existing dependency deprecation warning remains.
+- No live provider request, database write, container start, or new benchmark was performed.
+  Kept actual earlier measurement dates, the development version, and separate release decisions.
+- The release checker passed for all 74 tracked/non-ignored candidate files, including local
+  Markdown links and its bounded path, size, encoding, and recognizable-secret checks.
